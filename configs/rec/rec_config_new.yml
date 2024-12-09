@@ -1,0 +1,65 @@
+Global:
+  use_gpu: True
+  epoch_num: 50
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_epoch_step: 5
+  eval_batch_step: [0, 200]
+  cal_metric_during_train: True
+  pretrained_model: null  # Path to a pretrained model, or set to null for training from scratch
+  checkpoints: null
+  save_inference_dir: "./inference"
+  output_dir: "./output"
+  eval_batch_size: 16
+
+  trainset_dir: "/opt/ml/input/data/training/images"
+  label_file_list: ["/opt/ml/input/data/training/label.txt"]
+  valset_dir: "/opt/ml/input/data/validation/images"
+  val_label_file_list: ["/opt/ml/input/data/validation/label.txt"]
+
+Architecture:
+  model_type: "rec"
+  algorithm: "CRNN"
+  Transform: None
+  Backbone:
+    name: "ResNet34_vd"
+    pretrained: False
+  Neck:
+    name: "SequenceEncoder"
+    encoder_type: "rnn"
+    hidden_size: 256
+  Head:
+    name: "CTCHead"
+    fc_decay: 0.00001
+
+Loss:
+  name: "CTCLoss"
+
+Optimizer:
+  name: "Adam"
+  beta1: 0.9
+  beta2: 0.999
+  lr:
+    learning_rate: 0.001
+
+Train:
+  dataset:
+    name: "SimpleDataSet"
+    data_dir: "/opt/ml/input/data/training/images"
+    label_file: "/opt/ml/input/data/training/label.txt"
+  loader:
+    shuffle: True
+    drop_last: True
+    batch_size_per_card: 32
+    num_workers: 4
+
+Eval:
+  dataset:
+    name: "SimpleDataSet"
+    data_dir: "/opt/ml/input/data/validation/images"
+    label_file: "/opt/ml/input/data/validation/label.txt"
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 16
+    num_workers: 4
