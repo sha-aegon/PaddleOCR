@@ -11,6 +11,6 @@ cython
 Pillow
 pyyaml
 requests
-albumentations==1.4.10
+albumentations==1.3.1
 # to be compatible with albumentations
 albucore==0.0.13
