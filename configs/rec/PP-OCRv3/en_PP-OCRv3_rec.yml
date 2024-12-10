@@ -77,10 +77,10 @@ Metric:
 Train:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data/
+    data_dir: ./train_data/rec/
     ext_op_transform_idx: 1
     label_file_list:
-    - ./train_data/train_list.txt
+    - ./train_data/rec/train_label.txt
     transforms:
     - DecodeImage:
         img_mode: BGR
@@ -103,15 +103,15 @@ Train:
         - valid_ratio
   loader:
     shuffle: true
-    batch_size_per_card: 128
+    batch_size_per_card: 1
     drop_last: true
     num_workers: 4
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data
+    data_dir: ./train_data/val_data/
     label_file_list:
-    - ./train_data/val_list.txt
+    - ./train_data/val_data/val_label.txt
     transforms:
     - DecodeImage:
         img_mode: BGR
